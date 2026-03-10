@@ -55,7 +55,6 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
@@ -76,3 +75,7 @@ dist
 
 # Firebase service account credentials
 *-firebase-adminsdk-*.json
+temp_auto_push.bat
+temp_interactive_push.bat
+config.bat
+branch_structure.json
