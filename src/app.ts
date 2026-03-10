@@ -1,0 +1,45 @@
+import type { Application } from "express";
+
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import express from "express";
+import helmet from "helmet";
+import morgan from "morgan";
+
+import { errorHandler } from "@/middlewares/error-handler.middleware";
+import { notFound } from "@/middlewares/not-found.middleware";
+import rootRouter from "@/routes/index.route.js";
+
+import { startMeetingCronJobs } from "./cron/meeting-cron.js";
+import { env } from "./env.js";
+import { pinoLogger } from "./middlewares/pino-logger.js";
+
+const app: Application = express();
+
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
+
+app.use(express.json());
+app.use(pinoLogger());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(morgan("dev"));
+app.use(helmet());
+startMeetingCronJobs();
+
+app.get<object>("/", (req, res) => {
+  res.json({
+    message: "🦄R🌈A✨K👋I🌎B✨M🌈M🦄",
+  });
+});
+
+app.use(env.BASE_URL, rootRouter);
+
+app.use(notFound);
+app.use(errorHandler);
+
+export default app;
